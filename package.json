@@ -2,7 +2,7 @@
   "name": "openapi-to-http",
   "displayName": "OpenAPI to HTTP",
   "description": "Generate .http files from OpenAPI specifications for API testing",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "publisher": "alexermolov",
   "author": "Alex Ermolov",
   "license": "MIT",
@@ -34,23 +34,26 @@
     "Programming Languages"
   ],
   "activationEvents": [
-    "onLanguage:json",
-    "onLanguage:yaml"
+    "onCommand:openapi-to-http.generateHttp"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "openapi-to-http.generateHttp",
-        "title": "Generate .http"
+        "title": "OpenAPI: Generate .http file"
       }
     ],
     "menus": {
+      "commandPalette": [
+        {
+          "command": "openapi-to-http.generateHttp"
+        }
+      ],
       "editor/context": [
         {
-          "when": "resourceLangId == json || resourceLangId == yaml",
           "command": "openapi-to-http.generateHttp",
-          "group": "navigation"
+          "group": "1_modification"
         }
       ]
     }

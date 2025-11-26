@@ -10,15 +10,21 @@ export function activate(context: vscode.ExtensionContext) {
     const disposable = vscode.commands.registerCommand(
         "openapi-to-http.generateHttp",
         async () => {
+            console.log("Generate HTTP command triggered");
+            
             const editor = vscode.window.activeTextEditor;
 
             if (!editor) {
                 vscode.window.showErrorMessage("No active editor found");
+                console.error("No active editor");
                 return;
             }
 
             const document = editor.document;
             const filePath = document.uri.fsPath;
+            
+            console.log(`Processing file: ${filePath}`);
+            console.log(`Language ID: ${document.languageId}`);
 
             try {
                 // Show progress indicator
@@ -34,17 +40,33 @@ export function activate(context: vscode.ExtensionContext) {
                             message: "Validating OpenAPI specification...",
                         });
 
-                        // Validate and parse OpenAPI file
-                        const openApiSpec = await validateAndParseOpenAPI(
-                            filePath
-                        );
+                        console.log("Starting OpenAPI validation...");
 
-                        if (!openApiSpec) {
+                        // Validate and parse OpenAPI file
+                        let openApiSpec;
+                        try {
+                            openApiSpec = await validateAndParseOpenAPI(
+                                filePath
+                            );
+                        } catch (validationError) {
+                            const errorMsg = validationError instanceof Error 
+                                ? validationError.message 
+                                : String(validationError);
+                            console.error("Validation error:", errorMsg);
                             vscode.window.showErrorMessage(
-                                "The file is not a valid OpenAPI specification"
+                                `OpenAPI validation failed: ${errorMsg}`
                             );
                             return;
                         }
+
+                        if (!openApiSpec) {
+                            const errorMsg = "The file is not a valid OpenAPI specification. Please check that it contains 'openapi' or 'swagger' version field.";
+                            console.error(errorMsg);
+                            vscode.window.showErrorMessage(errorMsg);
+                            return;
+                        }
+
+                        console.log("OpenAPI validation successful");
 
                         progress.report({
                             increment: 30,

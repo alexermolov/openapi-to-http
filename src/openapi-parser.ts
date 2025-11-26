@@ -5,30 +5,58 @@ import { OpenAPIV3 } from "openapi-types";
  * Validates if a file is a valid OpenAPI specification and parses it
  * @param filePath Path to the file to validate
  * @returns Parsed OpenAPI spec or null if not valid
+ * @throws Error with detailed message if validation fails
  */
 export async function validateAndParseOpenAPI(
     filePath: string
 ): Promise<OpenAPIV3.Document | null> {
     try {
+        console.log(`Parsing file: ${filePath}`);
         const api = await SwaggerParser.validate(filePath);
+        
+        console.log("API object keys:", Object.keys(api));
+        console.log("Version info:", {
+            openapi: "openapi" in api ? (api as any).openapi : undefined,
+            swagger: "swagger" in api ? (api as any).swagger : undefined
+        });
 
         // Check if it's OpenAPI 3.x (we'll support this version)
         if ("openapi" in api && api.openapi.startsWith("3")) {
+            console.log("Detected OpenAPI 3.x specification");
             return api as OpenAPIV3.Document;
         }
 
         // Check if it's Swagger 2.0 (we can also support this)
         if ("swagger" in api && api.swagger === "2.0") {
+            console.log("Detected Swagger 2.0 specification, converting to OpenAPI 3");
             // Convert to OpenAPI 3 using swagger-parser's bundle method
             const bundled = await SwaggerParser.bundle(filePath);
             return bundled as OpenAPIV3.Document;
         }
 
-        return null;
+        console.error("Unsupported API specification version");
+        throw new Error(
+            `Unsupported API specification version. Expected OpenAPI 3.x or Swagger 2.0, but got: ${
+                "openapi" in api ? `OpenAPI ${(api as any).openapi}` :
+                "swagger" in api ? `Swagger ${(api as any).swagger}` :
+                "unknown version"
+            }`
+        );
     } catch (error) {
         // File is not a valid OpenAPI spec
-        console.error("OpenAPI validation error:", error);
-        return null;
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        console.error("OpenAPI validation error:", errorMessage);
+        
+        // Re-throw with more context if it's a parsing error
+        if (errorMessage.includes("ENOENT")) {
+            throw new Error(`File not found: ${filePath}`);
+        } else if (errorMessage.includes("JSON") || errorMessage.includes("YAML")) {
+            throw new Error(`Invalid JSON/YAML format: ${errorMessage}`);
+        } else if (errorMessage.includes("Unsupported")) {
+            throw error; // Already has good message
+        } else {
+            throw new Error(`Failed to parse OpenAPI specification: ${errorMessage}`);
+        }
     }
 }
 
