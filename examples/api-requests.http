@@ -1,0 +1,109 @@
+# Generated from OpenAPI Specification
+# Title: E-commerce API
+# Version: 2.0.0
+# Description: API for managing an e-commerce platform
+
+@baseUrl = https://api.shop.example.com/v2
+
+###
+
+# List products
+# Operation ID: listProducts
+
+GET {{baseUrl}}/products?category=books&minPrice=18800285.69698278&maxPrice=29643315.89827164
+
+###
+
+# Create a product
+# Operation ID: createProduct
+
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "name": "pariatur sit esse",
+  "description": "sed veni",
+  "price": 24859780.020000003,
+  "category": "clothing",
+  "inStock": true,
+  "tags": [
+    "Duis labore",
+    "ad esse irure sit",
+    "do aliquip do",
+    "laboris et amet oc",
+    "nisi consequat deseru"
+  ],
+  "specifications": {
+    "weight": 59831591.02004186,
+    "dimensions": {
+      "length": -55217238.28330987,
+      "width": 69252303.8807227,
+      "height": 63710002.64588916
+    }
+  }
+}
+###
+
+# Get product by ID
+# Operation ID: getProduct
+
+GET {{baseUrl}}/products/f207ae0b-0cab-1e1b-cb78-41f307210572
+
+###
+
+# Delete product
+# Operation ID: deleteProduct
+
+DELETE {{baseUrl}}/products/75ef6a6d-0272-b1bf-5541-c094302d3924
+
+###
+
+# Create an order
+# Operation ID: createOrder
+
+POST {{baseUrl}}/orders
+X-Customer-ID: bf67025b-2276-ea66-0588-d4664c253ac5
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "ea8e7": -33577286.63440072,
+      "ex_4": 40903136,
+      "productId": "ee22d99e-eb33-be80-cd47-7ae6b65b3d9e",
+      "quantity": 32
+    },
+    {
+      "proident_810": false,
+      "productId": "c23cd71d-4128-8c0b-6203-7ce10cb3e63e",
+      "quantity": 57
+    },
+    {
+      "eu30": 38783354,
+      "ut_f1e": "",
+      "productId": "6eaa0b59-d8c9-e9ff-82de-1133a32be81a",
+      "quantity": 30
+    },
+    {
+      "fugiat54": -25330500.365759656,
+      "ut_ea9": "dolor enim",
+      "animd1_": 19735176.43119958,
+      "Lorem_83_": "pariat",
+      "non_2b6": 44052414,
+      "productId": "e73ca157-3923-a0a2-e325-8d43ee9b762b",
+      "quantity": 88
+    },
+    {
+      "productId": "28e3d39b-f046-d7ce-8a34-fcce141c73df",
+      "quantity": 89
+    }
+  ],
+  "shippingAddress": {
+    "street": "proident",
+    "city": "eiusmod",
+    "zipCode": "40127",
+    "country": "USA"
+  }
+}
+###
+

@@ -1,0 +1,234 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "E-commerce API",
+    "description": "API for managing an e-commerce platform",
+    "version": "2.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.shop.example.com/v2",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/products": {
+      "get": {
+        "summary": "List products",
+        "operationId": "listProducts",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["electronics", "clothing", "books"]
+            }
+          },
+          {
+            "name": "minPrice",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "maxPrice",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of products"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a product",
+        "operationId": "createProduct",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "price", "category"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 100
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 1000
+                  },
+                  "price": {
+                    "type": "number",
+                    "minimum": 0.01,
+                    "multipleOf": 0.01
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": ["electronics", "clothing", "books"]
+                  },
+                  "inStock": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 1,
+                    "maxItems": 10
+                  },
+                  "specifications": {
+                    "type": "object",
+                    "properties": {
+                      "weight": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "dimensions": {
+                        "type": "object",
+                        "properties": {
+                          "length": { "type": "number" },
+                          "width": { "type": "number" },
+                          "height": { "type": "number" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Product created"
+          }
+        }
+      }
+    },
+    "/products/{productId}": {
+      "get": {
+        "summary": "Get product by ID",
+        "operationId": "getProduct",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product details"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete product",
+        "operationId": "deleteProduct",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Product deleted"
+          }
+        }
+      }
+    },
+    "/orders": {
+      "post": {
+        "summary": "Create an order",
+        "operationId": "createOrder",
+        "parameters": [
+          {
+            "name": "X-Customer-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["items"],
+                "properties": {
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["productId", "quantity"],
+                      "properties": {
+                        "productId": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 100
+                        }
+                      }
+                    },
+                    "minItems": 1
+                  },
+                  "shippingAddress": {
+                    "type": "object",
+                    "required": ["street", "city", "zipCode"],
+                    "properties": {
+                      "street": { "type": "string" },
+                      "city": { "type": "string" },
+                      "zipCode": { 
+                        "type": "string",
+                        "pattern": "^\\d{5}$"
+                      },
+                      "country": {
+                        "type": "string",
+                        "default": "USA"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order created"
+          }
+        }
+      }
+    }
+  }
+}

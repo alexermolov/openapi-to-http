@@ -1,0 +1,57 @@
+{
+  "name": "openapi-to-http",
+  "displayName": "OpenAPI to HTTP",
+  "description": "Generate .http files from OpenAPI specifications for API testing",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:json",
+    "onLanguage:yaml"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "openapi-to-http.generateHttp",
+        "title": "Generate .http"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "resourceLangId == json || resourceLangId == yaml",
+          "command": "openapi-to-http.generateHttp",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/node": "^20.x",
+    "@types/vscode": "^1.80.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.40.0",
+    "typescript": "^5.1.3"
+  },
+  "dependencies": {
+    "@apidevtools/swagger-parser": "^10.1.0",
+    "openapi-types": "^12.1.3",
+    "json-schema-faker": "^0.5.6"
+  }
+}
