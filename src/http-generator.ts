@@ -15,7 +15,7 @@ export function generateHttpFile(spec: OpenAPIV3.Document): string {
     content += `# Title: ${spec.info.title}\n`;
     content += `# Version: ${spec.info.version}\n`;
     if (spec.info.description) {
-        content += `# Description: ${spec.info.description}\n`;
+        content += formatCommentBlock(spec.info.description, "Description:");
     }
     content += `\n`;
     content += `@baseUrl = ${baseUrl}\n`;
@@ -38,10 +38,10 @@ function generateHttpRequest(op: OperationInfo, baseUrl: string): string {
 
     // Add comment with operation details
     if (op.operation.summary) {
-        request += `# ${op.operation.summary}\n`;
+        request += formatCommentBlock(op.operation.summary);
     }
     if (op.operation.description) {
-        request += `# ${op.operation.description}\n`;
+        request += formatCommentBlock(op.operation.description);
     }
     if (op.operation.operationId) {
         request += `# Operation ID: ${op.operation.operationId}\n`;
@@ -129,4 +129,19 @@ function generateHttpRequest(op: OperationInfo, baseUrl: string): string {
     }
 
     return request;
+}
+
+function formatCommentBlock(value: string, label?: string): string {
+    const lines = value.split(/\r?\n/);
+
+    return (
+        lines
+            .map((line, index) => {
+                const prefix =
+                    index === 0 && label ? `${label}${line ? " " : ""}` : "";
+                const text = prefix ? `${prefix}${line}` : line;
+                return text ? `# ${text}` : "#";
+            })
+            .join("\n") + "\n"
+    );
 }

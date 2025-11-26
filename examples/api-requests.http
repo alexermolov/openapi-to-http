@@ -1,22 +1,190 @@
 # Generated from OpenAPI Specification
-# Title: Simple API overview
-# Version: 2.0.0
+# Title: Files
+# Version: v3
+# Description: This is a generated connector from OpenAPI specification.
+# These APIs allow to upload and manage files.
 
-@baseUrl = http://localhost
-
-###
-
-# List API versions
-# Operation ID: listVersionsv2
-
-GET {{baseUrl}}/
+@baseUrl = https://api.hubapi.com
 
 ###
 
-# Show API version details
-# Operation ID: getVersionDetailsv2
+# Upload file
+# Upload a single file with content specified in request body.
+# Operation ID: files upload
 
-GET {{baseUrl}}/v2
+POST {{baseUrl}}/files/v3/files
+Content-Type: multipart/form-data
+
+file=dolore%20sunt&folderId=in&folderPath=aute%20non%20esse&fileName=cupidatat%20amet&charsetHunch=sunt%20proident&options=sint%20commodo%20Ut%20veniam
+###
+
+# Import a file from a URL into the file manager.
+# Asynchronously imports the file at the given URL into the file manager.
+# Operation ID: files/import from url
+
+POST {{baseUrl}}/files/v3/files/import-from-url/async
+Content-Type: application/json
+
+{
+  "access": "labore",
+  "ttl": "nulla aliquip",
+  "name": "consectetur dolore",
+  "url": "labore ut mollit commodo",
+  "folderId": "cupidatat commodo",
+  "folderPath": "in Duis",
+  "duplicateValidationStrategy": "esse",
+  "duplicateValidationScope": "ea pariatur ipsum c",
+  "overwrite": true
+}
+###
+
+# Check import status.
+# Check the status of requested import.
+# Operation ID: check Import Status
+
+GET {{baseUrl}}/files/v3/files/import-from-url/async/tasks//status
+
+###
+
+# Search files
+# Search through files in the file manager. Does not display hidden or archived files.
+# Operation ID: files/do Search
+
+GET {{baseUrl}}/files/v3/files/search?properties=laboris%20Lorem%20ad%20ut%2Ctempor%2Cirure%20non%2Caute%2Cdolor%20cupidatat%20proident&after=aliqua%20Lorem%20ut%20sed&before=id%20in%20aliqua%20ex%20Ut&limit=-31850287&sort=veniam%20consequat%20l%2C%2Cconse%2Caliquip%2Cnisi%20dolor%20aliqua%20ut%20eu&id=aliquip%20laborum%20adipisicing%20ullamco%20ei&createdAt=1927-05-30T12%3A20%3A30.0Z&createdAtLte=1944-12-28T07%3A19%3A51.0Z&createdAtGte=1910-01-16T23%3A36%3A08.0Z&updatedAt=1893-07-25T23%3A19%3A03.0Z&updatedAtLte=1927-02-20T03%3A48%3A40.0Z&updatedAtGte=1936-01-05T01%3A52%3A51.0Z&name=c&filePath=non&parentFolderId=-62565851&size=-55278639&height=25679343&width=-41681485&encoding=enim%20magna&type=anim%20laboris%20do%20qui&extension=dolore%20in%20et&url=ut%20velit&isUsableInContent=false&allowsAnonymousAccess=false
+
+###
+
+# Get file.
+# Get file by ID.
+# Operation ID: files/get By/Id
+
+GET {{baseUrl}}/files/v3/files/3643461?properties=adipisicing%2Cminim%2Cea%20voluptate%2Cipsum%20incididunt%20laboris%20%2Cqui%20ea%20tempor
+
+###
+
+# Replace file.
+# Replace existing file data with new file data. Can be used to change image content without having to upload a new file and update all references.
+# Operation ID: files replace
+
+PUT {{baseUrl}}/files/v3/files/21
+Content-Type: multipart/form-data
+
+file=aliqua&charsetHunch=amet&options=fugiat%20sit
+###
+
+# update file properties
+# Update properties of file by ID.
+# Operation ID: Update File Properties
+
+PATCH {{baseUrl}}/files/v3/files/23306
+Content-Type: application/json
+
+{
+  "name": "cillum dolore deserunt",
+  "parentFolderId": "mollit eu labor",
+  "parentFolderPath": "irure sint eiusmod",
+  "isUsableInContent": false,
+  "access": "laboru"
+}
+###
+
+# Delete file
+# Delete file by ID
+# Operation ID: delete files
+
+DELETE {{baseUrl}}/files/v3/files/09
+
+###
+
+# GDPR delete
+# GDRP delete file
+# Operation ID: delete archive GDPR
+
+DELETE {{baseUrl}}/files/v3/files/528/gdpr-delete
+
+###
+
+# Get signed URL to access private file.
+# Generates signed URL that allows temporary access to a private file.
+# Operation ID: get Signed Url
+
+GET {{baseUrl}}/files/v3/files/0346789014/signed-url?size=deserunt&expirationSeconds=69261648&upscale=true
+
+###
+
+# Create folder.
+# Creates a folder.
+# Operation ID: folders create
+
+POST {{baseUrl}}/files/v3/folders
+Content-Type: application/json
+
+{
+  "name": "mollit in Lorem sint labore",
+  "parentFolderId": "ut laborum ad ",
+  "parentPath": "laboris"
+}
+###
+
+# Search folders
+# Search for folders. Does not contain hidden or archived folders.
+# Operation ID: do Search
+
+GET {{baseUrl}}/files/v3/folders/search?properties=nisi%20ullamco%20aliquip%20esse%20Duis%2Claborum%20eu%20veniam%2Celit%2Ccillum%20commodo%20in%20dolor%20sit%2Cad%20dolor&after=sit%20incididunt%20ut&before=mollit%20nulla&limit=64995206&sort=elit%20L%2Csit%20amet%20sint%20laboris%2Cirure%20aliqua%20ut%20amet%20tempor%2Cdolore%20ut%20ex%20volupta%2Cfugiat%20ad%20in%20est%20Ut&id=&createdAt=1898-11-26T02%3A10%3A28.0Z&createdAtLte=1952-01-11T12%3A06%3A33.0Z&createdAtGte=1907-11-15T01%3A03%3A01.0Z&updatedAt=1946-05-04T17%3A54%3A57.0Z&updatedAtLte=1969-04-13T20%3A42%3A14.0Z&updatedAtGte=1929-06-11T04%3A13%3A03.0Z&name=consequat%20enim&folderPath=nostrud%20ut%20ex&parentFolderId=-52096127
+
+###
+
+# Update folder properties
+# Update properties of folder by given ID. This action happens asynchronously and will update all of the folder's children as well.
+# Operation ID: update Folder Properties
+
+POST {{baseUrl}}/files/v3/folders/update/async
+Content-Type: application/json
+
+{
+  "id": "non sed consectetur tempor",
+  "name": "pariatu",
+  "parentFolderId": -88040867
+}
+###
+
+# Check folder update status.
+# Check status of folder update. Folder updates happen asynchronously.
+# Operation ID: check Update Status
+
+GET {{baseUrl}}/files/v3/folders/update/async/tasks/voluptate Lorem aliqua/status
+
+###
+
+# Get folder
+# Get folder by ID
+# Operation ID: folders get By Id
+
+GET {{baseUrl}}/files/v3/folders/636239?properties=do%20dolor%2C%2Ccupidatat%2Cnulla%20i%2Cminim%20labore%20sit
+
+###
+
+# Delete folder.
+# Delete folder by ID.
+# Operation ID: delete/folders
+
+DELETE {{baseUrl}}/files/v3/folders/628292
+
+###
+
+# Get folder.
+# Get folder by path.
+# Operation ID: folders/get By Path
+
+GET {{baseUrl}}/files/v3/folders/x+DJGB5[^?properties=voluptate%20in%20ex%20incididunt%2Cin%2Celit%2C%2Clabore%20voluptate%20velit%20in
+
+###
+
+# Delete folder.
+# Delete folder by path.
+# Operation ID: folders/archive By Path
+
+DELETE {{baseUrl}}/files/v3/folders/WJ
 
 ###
 
