@@ -2,7 +2,7 @@
   "name": "openapi-to-http",
   "displayName": "OpenAPI to HTTP",
   "description": "Generate .http files from OpenAPI specifications for API testing",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "alexermolov",
   "author": "Alex Ermolov",
   "license": "MIT",

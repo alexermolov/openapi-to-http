@@ -10,7 +10,6 @@ vsc-extension-quickstart.md
 **/*.ts
 .editorconfig
 .eslintrc.json
-node_modules/**
 examples/**
 .git/**
 .github/**
